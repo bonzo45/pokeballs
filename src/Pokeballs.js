@@ -5,7 +5,7 @@ export const Pokeballs = () => {
     let loaded = 0;
     const runStuff = () => {
         loaded++;
-        if (loaded != 2) {
+        if (loaded !== 2) {
             return;
         }
 
@@ -24,9 +24,9 @@ export const Pokeballs = () => {
             })
         }
         const pokeballAppearTime = 1000;
-        const pokeballAppearDelay = 1000;
+        const pokeballAppearDelay = 5000;
         const pokeballWobbleTime = 1000;
-        const pokeballWobbleDelay = 100000;
+        const pokeballWobbleDelay = 500000;
 
         let pokeballSize;
         let rows = 0;
@@ -60,7 +60,8 @@ export const Pokeballs = () => {
 
                 ctx.save();
                 // Crazy rotation...
-                const getToCenterLeft = (column * pokeballSize) + (pokeballSize / 2);
+                const adjustmentForRotation = (Math.PI * currentSize * (pokeballStates[i].rotation / 360));
+                const getToCenterLeft = (column * pokeballSize) + (pokeballSize / 2) + adjustmentForRotation;
                 const getToCenterTop = (row * pokeballSize) + (pokeballSize / 2);
                 ctx.translate(getToCenterLeft, getToCenterTop);
                 ctx.rotate(pokeballStates[i].rotation * Math.PI / 180)
