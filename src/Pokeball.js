@@ -2,10 +2,10 @@ import { React, useEffect } from 'react';
 import anime from 'animejs';
 
 const diameter = 40;
-const translateLeft = Math.PI * diameter * (-25 / 260);
-const rotateLeft = '-25deg';
-const translateRight = Math.PI * diameter * (25 / 260);
-const rotateRight = '25deg';
+// const translateLeft = Math.PI * diameter * (-25 / 260);
+// const rotateLeft = '-25deg';
+// const translateRight = Math.PI * diameter * (25 / 260);
+// const rotateRight = '25deg';
 
 export const Pokeball = ({index}) => {
     useEffect(() => {

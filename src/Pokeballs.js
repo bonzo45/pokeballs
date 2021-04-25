@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React } from 'react';
 import anime from 'animejs';
 
 export const Pokeballs = () => {
@@ -11,16 +11,13 @@ export const Pokeballs = () => {
         const numbles = 898;
         console.log(anime.stagger(10))
         let pokeballSize;
-        var state = {
-            currentPokeballSize: 0,
-        };
         var pokeballStates = [];
         for (let i = 0; i < numbles; i++) {
             pokeballStates.push({
                 currentPokeballSize: 0,
             })
         }
-        const rows = 23;
+        // const rows = 23;
         const columns = 39;
 
         function setCanvasSize() {
@@ -53,7 +50,6 @@ export const Pokeballs = () => {
         }
 
         const render = anime({
-            // duration: Infinity,
             update: function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             },
@@ -66,7 +62,7 @@ export const Pokeballs = () => {
     return (
         <>
             <canvas id="poke-canvas"/>
-            <img style={{display: 'none'}} onLoad={runStuff} id="poke-img" src="pokeball.svg" />
+            <img style={{display: 'none'}} onLoad={runStuff} id="poke-img" src="pokeball.svg" alt="" />
         </>
     );
 }
