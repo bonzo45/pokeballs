@@ -9,11 +9,11 @@ export const Pokeballs = () => {
             return;
         }
 
-        var canvas = document.getElementById("poke-canvas");
-        var ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("poke-canvas");
+        const ctx = canvas.getContext('2d');
 
-        var pokeballImg = document.getElementById("pokeball-img");
-        var pokeballGreyscaleImg = document.getElementById("pokeball-greyscale-img");
+        const pokeballImg = document.getElementById("pokeball-img");
+        const pokeballGreyscaleImg = document.getElementById("pokeball-greyscale-img");
         const numbles = 898;
         const pokeballRotation = 25;
         const numGeneration1 = 151;
@@ -27,7 +27,7 @@ export const Pokeballs = () => {
         const pokeballAppearTime = 1000;
         const pokeballAppearDelay = 5000;
         const pokeballWobbleTime = 1000;
-        const pokeballWobbleDelay = 4000;
+        const pokeballWobbleDelay = 400000;
 
         let pokeballSize;
         let rows = 0;
