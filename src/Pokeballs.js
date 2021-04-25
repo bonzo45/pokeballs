@@ -15,7 +15,7 @@ export const Pokeballs = () => {
         var pokeballImg = document.getElementById("pokeball-img");
         var pokeballGreyscaleImg = document.getElementById("pokeball-greyscale-img");
         const numbles = 898;
-        // const numbles = 251;
+        const pokeballRotation = 25;
         const numGeneration1 = 151;
         const pokeballStates = [];
         for (let i = 0; i < numbles; i++) {
@@ -47,31 +47,32 @@ export const Pokeballs = () => {
         }
 
         const renderPokeballs = () => {
-            const optimisationClearPadding = 2;
             for (let i = 0; i < numbles; i++) {
                 const row = Math.floor(i / columns);
                 const column = i % columns;
 
-                // Optimisation to only clear space that is needed?
+                // Only bother re-rendering the ball if the size or rotation isn't in the end state.
                 const pokeballState = pokeballStates[i];
-                if (pokeballState.currentPokeballSize !== pokeballSize || pokeballState.rotation !== 0) {
-                    ctx.clearRect(
-                        (column * pokeballSize) - optimisationClearPadding,
-                        (row * pokeballSize) - optimisationClearPadding,
-                        pokeballSize + 2 * optimisationClearPadding,
-                        pokeballSize + 2 * optimisationClearPadding
-                    );
-                } else {
+                if (pokeballState.currentPokeballSize === pokeballSize && pokeballState.rotation === 0) {
                     continue;
                 }
 
                 let currentSize;
                 if (i < numGeneration1) {
-                    currentSize = pokeballState.currentPokeballSize * 0.9;
+                    currentSize = pokeballState.currentPokeballSize * 0.80;
                 }
                 else {
-                    currentSize = pokeballState.currentPokeballSize * 0.8;
+                    currentSize = pokeballState.currentPokeballSize * 0.75;
                 }
+
+                // Clear the part of the canvas that corresponds to this pokeball (and the space it can roll into).
+                const maxAdjustmentForRotation = (Math.PI * currentSize * (pokeballRotation / 360));
+                ctx.clearRect(
+                    (column * pokeballSize) - maxAdjustmentForRotation,
+                    (row * pokeballSize) - maxAdjustmentForRotation,
+                    pokeballSize + 2 * maxAdjustmentForRotation,
+                    pokeballSize + 2 * maxAdjustmentForRotation
+                );
 
                 ctx.save();
                 // Crazy rotation...
@@ -107,10 +108,10 @@ export const Pokeballs = () => {
                         rotation: 0,
                     },
                     {
-                        rotation: 25,
+                        rotation: pokeballRotation,
                     },
                     {
-                        rotation: -25,
+                        rotation: -pokeballRotation,
                     },
                     {
                         rotation: 0,
