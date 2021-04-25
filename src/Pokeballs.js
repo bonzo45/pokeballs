@@ -7,19 +7,19 @@ export const Pokeballs = () => {
         var ctx = canvas.getContext("2d");
 
         var img = document.getElementById("poke-img");
-        // const numbles = 251;
         const numbles = 898;
-        console.log(anime.stagger(10))
-        let pokeballSize;
-        var pokeballStates = [];
+        const pokeballStates = [];
         for (let i = 0; i < numbles; i++) {
             pokeballStates.push({
                 currentPokeballSize: 0,
             })
         }
+        const pokeballAppearTime = 1000;
+        const pokeballRandomDelay = 2000;
+
+        let pokeballSize;
         let rows = 0;
         let columns = 0;
-
         function setCanvasSize() {
             const aspectRatio = window.innerWidth / window.innerHeight;
             columns = Math.sqrt(numbles * aspectRatio);
@@ -50,9 +50,9 @@ export const Pokeballs = () => {
             anime.timeline().add({
                 targets: pokeballStates,
                 currentPokeballSize: pokeballSize,
-                delay: function() { return anime.random(0, 2000); },
+                delay: function() { return anime.random(0, pokeballRandomDelay); },
                 update: renderPokeballs,
-                duration: 1000,
+                duration: pokeballAppearTime,
             });
         }
 
@@ -60,12 +60,14 @@ export const Pokeballs = () => {
             update: function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             },
+            duration: pokeballAppearTime + pokeballRandomDelay,
         })
 
         setCanvasSize();
         render.play();
         animatePokeball();
     }
+
     return (
         <>
             <canvas id="poke-canvas"/>
