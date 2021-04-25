@@ -17,15 +17,22 @@ export const Pokeballs = () => {
                 currentPokeballSize: 0,
             })
         }
-        // const rows = 23;
-        const columns = 39;
+        let rows = 0;
+        let columns = 0;
 
         function setCanvasSize() {
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            columns = Math.sqrt(numbles * aspectRatio);
+            rows = columns / aspectRatio;
+            columns = Math.ceil(columns);
+            rows = Math.ceil(rows);
+            console.log(columns, rows)
+            pokeballSize = Math.min(window.innerWidth / columns, window.innerHeight / rows);
+
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             canvas.style.width = window.innerWidth + 'px';
             canvas.style.height = window.innerHeight + 'px';
-            pokeballSize = window.innerWidth / columns;
         }
 
         const renderPokeballs = () => {
