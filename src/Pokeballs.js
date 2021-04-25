@@ -2,12 +2,20 @@ import { React } from 'react';
 import anime from 'animejs';
 
 export const Pokeballs = () => {
+    let loaded = 0;
     const runStuff = () => {
+        loaded++;
+        if (loaded != 2) {
+            return;
+        }
+
         var canvas = document.getElementById("poke-canvas");
         var ctx = canvas.getContext("2d");
 
-        var img = document.getElementById("poke-img");
+        var pokeballImg = document.getElementById("pokeball-img");
+        var pokeballGreyscaleImg = document.getElementById("pokeball-greyscale-img");
         const numbles = 898;
+        const numGeneration1 = 151;
         const pokeballStates = [];
         for (let i = 0; i < numbles; i++) {
             pokeballStates.push({
@@ -26,7 +34,6 @@ export const Pokeballs = () => {
             rows = columns / aspectRatio;
             columns = Math.ceil(columns);
             rows = Math.ceil(rows);
-            console.log(columns, rows)
             pokeballSize = Math.min(window.innerWidth / columns, window.innerHeight / rows);
 
             canvas.width = window.innerWidth;
@@ -42,7 +49,12 @@ export const Pokeballs = () => {
                 const currentSize = pokeballStates[i].currentPokeballSize;
                 const left = (column * pokeballSize) + (pokeballSize / 2) - (currentSize / 2);
                 const top = (row * pokeballSize) + (pokeballSize / 2) - (currentSize / 2);
-                ctx.drawImage(img, left, top, currentSize, currentSize);
+                if (i < numGeneration1) {
+                    ctx.drawImage(pokeballImg, left, top, currentSize, currentSize);
+                }
+                else {
+                    ctx.drawImage(pokeballGreyscaleImg, left, top, currentSize, currentSize);
+                }
             }
         }
 
@@ -71,7 +83,8 @@ export const Pokeballs = () => {
     return (
         <>
             <canvas id="poke-canvas"/>
-            <img style={{display: 'none'}} onLoad={runStuff} id="poke-img" src="pokeball.svg" alt="" />
+            <img style={{display: 'none'}} onLoad={runStuff} id="pokeball-img" src="pokeball.svg" alt="" />
+            <img style={{display: 'none'}} onLoad={runStuff} id="pokeball-greyscale-img" src="pokeball-greyscale.svg" alt="" />
         </>
     );
 }
