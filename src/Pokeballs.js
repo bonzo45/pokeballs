@@ -10,11 +10,12 @@ export const Pokeballs = () => {
         }
 
         var canvas = document.getElementById("poke-canvas");
-        var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext('2d');
 
         var pokeballImg = document.getElementById("pokeball-img");
         var pokeballGreyscaleImg = document.getElementById("pokeball-greyscale-img");
         const numbles = 898;
+        // const numbles = 251;
         const numGeneration1 = 151;
         const pokeballStates = [];
         for (let i = 0; i < numbles; i++) {
@@ -26,7 +27,7 @@ export const Pokeballs = () => {
         const pokeballAppearTime = 1000;
         const pokeballAppearDelay = 5000;
         const pokeballWobbleTime = 1000;
-        const pokeballWobbleDelay = 500000;
+        const pokeballWobbleDelay = 200000;
 
         let pokeballSize;
         let rows = 0;
@@ -61,15 +62,17 @@ export const Pokeballs = () => {
                 ctx.save();
                 // Crazy rotation...
                 const adjustmentForRotation = (Math.PI * currentSize * (pokeballStates[i].rotation / 360));
-                const getToCenterLeft = (column * pokeballSize) + (pokeballSize / 2) + adjustmentForRotation;
-                const getToCenterTop = (row * pokeballSize) + (pokeballSize / 2);
+                const halfPokeballSize = pokeballSize / 2;
+                const getToCenterLeft = (column * pokeballSize) + halfPokeballSize + adjustmentForRotation;
+                const getToCenterTop = (row * pokeballSize) + halfPokeballSize;
                 ctx.translate(getToCenterLeft, getToCenterTop);
                 ctx.rotate(pokeballStates[i].rotation * Math.PI / 180)
                 ctx.translate(-getToCenterLeft, -getToCenterTop);
 
                 // Then draw it as normal...
-                const left = getToCenterLeft - (currentSize / 2);
-                const top = getToCenterTop - (currentSize / 2);
+                const halfCurrentSize = currentSize / 2
+                const left = getToCenterLeft - halfCurrentSize;
+                const top = getToCenterTop - halfCurrentSize;
                 const image = i < numGeneration1 ? pokeballImg : pokeballGreyscaleImg;
                 ctx.drawImage(image, left, top, currentSize, currentSize);
                 ctx.restore();
@@ -108,10 +111,10 @@ export const Pokeballs = () => {
         }
 
         const render = anime({
-            update: function() {
-                // ctx.clearRect(0, 0, canvas.width, canvas.height);
-            },
-            duration: pokeballAppearTime + pokeballAppearDelay,
+            // update: function() {
+            //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // },
+            duration: pokeballAppearTime + pokeballAppearDelay + pokeballWobbleTime + pokeballWobbleDelay,
         })
 
         setCanvasSize();
