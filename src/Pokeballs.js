@@ -20,10 +20,13 @@ export const Pokeballs = () => {
         for (let i = 0; i < numbles; i++) {
             pokeballStates.push({
                 currentPokeballSize: 0,
+                rotation: 0,
             })
         }
         const pokeballAppearTime = 1000;
-        const pokeballRandomDelay = 2000;
+        const pokeballAppearDelay = 1000;
+        const pokeballWobbleTime = 1000;
+        const pokeballWobbleDelay = 100000;
 
         let pokeballSize;
         let rows = 0;
@@ -43,18 +46,32 @@ export const Pokeballs = () => {
         }
 
         const renderPokeballs = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < numbles; i++) {
                 const row = Math.floor(i / columns);
                 const column = i % columns;
-                const currentSize = pokeballStates[i].currentPokeballSize;
-                const left = (column * pokeballSize) + (pokeballSize / 2) - (currentSize / 2);
-                const top = (row * pokeballSize) + (pokeballSize / 2) - (currentSize / 2);
+                let currentSize;
                 if (i < numGeneration1) {
-                    ctx.drawImage(pokeballImg, left, top, currentSize, currentSize);
+                    currentSize = pokeballStates[i].currentPokeballSize;
                 }
                 else {
-                    ctx.drawImage(pokeballGreyscaleImg, left, top, currentSize, currentSize);
+                    currentSize = pokeballStates[i].currentPokeballSize * 0.8;
                 }
+
+                ctx.save();
+                // Crazy rotation...
+                const getToCenterLeft = (column * pokeballSize) + (pokeballSize / 2);
+                const getToCenterTop = (row * pokeballSize) + (pokeballSize / 2);
+                ctx.translate(getToCenterLeft, getToCenterTop);
+                ctx.rotate(pokeballStates[i].rotation * Math.PI / 180)
+                ctx.translate(-getToCenterLeft, -getToCenterTop);
+
+                // Then draw it as normal...
+                const left = getToCenterLeft - (currentSize / 2);
+                const top = getToCenterTop - (currentSize / 2);
+                const image = i < numGeneration1 ? pokeballImg : pokeballGreyscaleImg;
+                ctx.drawImage(image, left, top, currentSize, currentSize);
+                ctx.restore();
             }
         }
 
@@ -62,17 +79,38 @@ export const Pokeballs = () => {
             anime.timeline().add({
                 targets: pokeballStates,
                 currentPokeballSize: pokeballSize,
-                delay: function() { return anime.random(0, pokeballRandomDelay); },
+                delay: function() { return anime.random(0, pokeballAppearDelay); },
                 update: renderPokeballs,
                 duration: pokeballAppearTime,
+            }).add({
+                targets: pokeballStates,
+                keyframes: [
+                    {
+                        rotation: 0,
+                    },
+                    {
+                        rotation: 25,
+                    },
+                    {
+                        rotation: -25,
+                    },
+                    {
+                        rotation: 0,
+                    },
+                ],
+                easing: 'cubicBezier(0.450, 0.010, 0.010, 1.000)',
+                duration: pokeballWobbleTime,
+                delay: function() { return anime.random(0, pokeballWobbleDelay); },
+                loop: 3,
+                update: renderPokeballs,
             });
         }
 
         const render = anime({
             update: function() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // ctx.clearRect(0, 0, canvas.width, canvas.height);
             },
-            duration: pokeballAppearTime + pokeballRandomDelay,
+            duration: pokeballAppearTime + pokeballAppearDelay,
         })
 
         setCanvasSize();
