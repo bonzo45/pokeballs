@@ -27,7 +27,7 @@ export const Pokeballs = () => {
         const pokeballAppearTime = 1000;
         const pokeballAppearDelay = 5000;
         const pokeballWobbleTime = 1000;
-        const pokeballWobbleDelay = 200000;
+        const pokeballWobbleDelay = 4000;
 
         let pokeballSize;
         let rows = 0;
@@ -57,6 +57,14 @@ export const Pokeballs = () => {
                     continue;
                 }
 
+                // Clear the part of the canvas that corresponds to this pokeball (and the space it can roll into).
+                ctx.clearRect(
+                    column * pokeballSize,
+                    row * pokeballSize,
+                    pokeballSize + 2,
+                    pokeballSize + 2,
+                );
+
                 let currentSize;
                 if (i < numGeneration1) {
                     currentSize = pokeballState.currentPokeballSize * 0.80;
@@ -64,15 +72,6 @@ export const Pokeballs = () => {
                 else {
                     currentSize = pokeballState.currentPokeballSize * 0.75;
                 }
-
-                // Clear the part of the canvas that corresponds to this pokeball (and the space it can roll into).
-                const maxAdjustmentForRotation = (Math.PI * currentSize * (pokeballRotation / 360));
-                ctx.clearRect(
-                    (column * pokeballSize) - maxAdjustmentForRotation,
-                    (row * pokeballSize) - maxAdjustmentForRotation,
-                    pokeballSize + 2 * maxAdjustmentForRotation,
-                    pokeballSize + 2 * maxAdjustmentForRotation
-                );
 
                 ctx.save();
                 // Crazy rotation...
@@ -95,14 +94,15 @@ export const Pokeballs = () => {
         }
 
         const animatePokeball = () => {
-            anime.timeline().add({
+            anime.timeline({
                 targets: pokeballStates,
+                loop: true,
+                update: renderPokeballs,
+            }).add({
                 currentPokeballSize: pokeballSize,
                 delay: function() { return anime.random(0, pokeballAppearDelay); },
-                update: renderPokeballs,
                 duration: pokeballAppearTime,
             }).add({
-                targets: pokeballStates,
                 keyframes: [
                     {
                         rotation: 0,
@@ -120,8 +120,6 @@ export const Pokeballs = () => {
                 easing: 'cubicBezier(0.450, 0.010, 0.010, 1.000)',
                 duration: pokeballWobbleTime,
                 delay: function() { return anime.random(0, pokeballWobbleDelay); },
-                loop: 3,
-                update: renderPokeballs,
             });
         }
 
