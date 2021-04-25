@@ -47,26 +47,40 @@ export const Pokeballs = () => {
         }
 
         const renderPokeballs = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const optimisationClearPadding = 2;
             for (let i = 0; i < numbles; i++) {
                 const row = Math.floor(i / columns);
                 const column = i % columns;
+
+                // Optimisation to only clear space that is needed?
+                const pokeballState = pokeballStates[i];
+                if (pokeballState.currentPokeballSize !== pokeballSize || pokeballState.rotation !== 0) {
+                    ctx.clearRect(
+                        (column * pokeballSize) - optimisationClearPadding,
+                        (row * pokeballSize) - optimisationClearPadding,
+                        pokeballSize + 2 * optimisationClearPadding,
+                        pokeballSize + 2 * optimisationClearPadding
+                    );
+                } else {
+                    continue;
+                }
+
                 let currentSize;
                 if (i < numGeneration1) {
-                    currentSize = pokeballStates[i].currentPokeballSize;
+                    currentSize = pokeballState.currentPokeballSize * 0.9;
                 }
                 else {
-                    currentSize = pokeballStates[i].currentPokeballSize * 0.8;
+                    currentSize = pokeballState.currentPokeballSize * 0.8;
                 }
 
                 ctx.save();
                 // Crazy rotation...
-                const adjustmentForRotation = (Math.PI * currentSize * (pokeballStates[i].rotation / 360));
+                const adjustmentForRotation = (Math.PI * currentSize * (pokeballState.rotation / 360));
                 const halfPokeballSize = pokeballSize / 2;
                 const getToCenterLeft = (column * pokeballSize) + halfPokeballSize + adjustmentForRotation;
                 const getToCenterTop = (row * pokeballSize) + halfPokeballSize;
                 ctx.translate(getToCenterLeft, getToCenterTop);
-                ctx.rotate(pokeballStates[i].rotation * Math.PI / 180)
+                ctx.rotate(pokeballState.rotation * Math.PI / 180)
                 ctx.translate(-getToCenterLeft, -getToCenterTop);
 
                 // Then draw it as normal...
