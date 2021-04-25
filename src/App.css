@@ -17,3 +17,7 @@
   /*width: 200px;*/
   /*height: 200px;*/
 }
+
+canvas {
+  background-color: black;
+}
