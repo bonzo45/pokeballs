@@ -150,8 +150,9 @@ export const Pokeballs = ({pokemonList}) => {
         const row = Math.floor(event.pageY / pokeballSize) + 1;
         const column = Math.floor(event.pageX / pokeballSize) + 1;
         const pokemonNumber = (row - 1) * columns + column;
-        if (pokemonNumber > NUMBER_OF_POKEMON) {
-            return;
+        if (row > rows || column > columns || pokemonNumber > NUMBER_OF_POKEMON) {
+            setSelectedPokemon(null);
+            return
         }
         setSelectedPokemon({
             pokemonNumber,
@@ -161,8 +162,8 @@ export const Pokeballs = ({pokemonList}) => {
     }
 
     let pokemonToDisplay;
-    const pokemonEntry = pokemonList[selectedPokemon.pokemonNumber - 1];
-    if (pokemonEntry !== undefined) {
+    if (selectedPokemon) {
+        const pokemonEntry = pokemonList[selectedPokemon.pokemonNumber - 1];
         const width = 200;
         const height = 350;
         const maxLeft = columns * pokeballSize - width;

@@ -42,5 +42,7 @@ label {
     background-color: rgba(128, 128, 128, 0.97);
     border-radius: 5px;
     pointer-events: none;
+
+    transition: left 0.1s, top 0.1s;
 }
 
