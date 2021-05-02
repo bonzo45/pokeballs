@@ -183,7 +183,7 @@ export const Pokeballs = ({pokemonList}) => {
     return (
         <div id="poke-wrapper">
             <div ref={canvasWrapperRef} id="poke-canvas-wrapper">
-                <canvas ref={canvasRef} onClick={selectPokemon} id="poke-canvas"/>
+                <canvas ref={canvasRef} onMouseMove={selectPokemon} id="poke-canvas"/>
             </div>
             <div id="poke-controls">
                 <h1>Controls</h1>
