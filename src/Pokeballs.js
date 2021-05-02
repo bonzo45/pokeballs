@@ -23,7 +23,7 @@ let forceRender = false;
 export const Pokeballs = ({pokemonList}) => {
     const [imagesLoaded, setImagesLoaded] = useState(0);
     const [animating, setAnimating] = useState(false);
-    const [selectedPokemon, setSelectedPokemon] = useState(1);
+    const [selectedPokemon, setSelectedPokemon] = useState({pokemonNumber: 1, row: 1, column: 1});
     const [, setRows] = useState(0);
     const [columns, setColumns] = useState(0);
     const [pokeballSize, setPokeballSize] = useState(0);
@@ -153,21 +153,24 @@ export const Pokeballs = ({pokemonList}) => {
         if (pokemonNumber > NUMBER_OF_POKEMON) {
             return;
         }
-        setSelectedPokemon(pokemonNumber);
-        console.log(pokemonList[pokemonNumber - 1])
+        setSelectedPokemon({
+            pokemonNumber,
+            row,
+            column,
+        });
     }
 
     let pokemonToDisplay;
-    if (pokemonList[selectedPokemon - 1] !== undefined) {
-        const pokemonEntry = pokemonList[selectedPokemon - 1];
+    const pokemonEntry = pokemonList[selectedPokemon.pokemonNumber - 1];
+    if (pokemonEntry !== undefined) {
         pokemonToDisplay = (
-            <>
-                <h2>{pokemonEntry.name}</h2>
+            <div className="poke-popup" style={{left: (selectedPokemon.column - 1) * pokeballSize, top: (selectedPokemon.row) * pokeballSize }}>
+                <h1>{pokemonEntry.name}</h1>
                 <img src={pokemonEntry.imageName} alt={pokemonEntry.name} />
                 <p>Type: {pokemonEntry.type}</p>
                 <p>Weight: {pokemonEntry.weight}</p>
                 <p>Height: {pokemonEntry.height}</p>
-            </>
+            </div>
         );
     }
 
