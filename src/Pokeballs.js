@@ -166,9 +166,20 @@ export const Pokeballs = ({pokemonList}) => {
         const width = 200;
         const height = 350;
         const maxLeft = columns * pokeballSize - width;
-        const left = (selectedPokemon.column - 1) * pokeballSize
         const maxTop = rows * pokeballSize - height;
-        const top = (selectedPokemon.row) * pokeballSize
+
+        const positionBelow = selectedPokemon.row < (rows / 2);
+        let left;
+        let top;
+        if (positionBelow) {
+            left = (selectedPokemon.column - 1) * pokeballSize
+            top = (selectedPokemon.row) * pokeballSize
+        } else {
+            left = (selectedPokemon.column - 1) * pokeballSize
+            top = (selectedPokemon.row) * pokeballSize - height - pokeballSize;
+        }
+
+
         pokemonToDisplay = (
             <div className="poke-popup" style={{left: Math.min(left, maxLeft), top: Math.min(top, maxTop), width, height}}>
                 <h1>{pokemonEntry.name}</h1>
