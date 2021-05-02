@@ -21,7 +21,7 @@ for (const row of pokemonCSV) {
     const name = row[3] || "";
     pokemonList.push({
         name: name,
-        imageName: `/pokemon/${name.toLowerCase().replace(/[^a-z]/gi, '')}.png`,
+        imageName: `/pokemon/${name.toLowerCase().replace(/\s/gi, '-').replace(/[^a-z-]/gi, '')}.png`,
         type: row[4] || "",
         weight: row[14],
         height: row[15],
