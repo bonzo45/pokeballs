@@ -24,7 +24,7 @@ export const Pokeballs = ({pokemonList}) => {
     const [imagesLoaded, setImagesLoaded] = useState(0);
     const [animating, setAnimating] = useState(false);
     const [selectedPokemon, setSelectedPokemon] = useState({pokemonNumber: 1, row: 1, column: 1});
-    const [, setRows] = useState(0);
+    const [rows, setRows] = useState(0);
     const [columns, setColumns] = useState(0);
     const [pokeballSize, setPokeballSize] = useState(0);
 
@@ -163,8 +163,14 @@ export const Pokeballs = ({pokemonList}) => {
     let pokemonToDisplay;
     const pokemonEntry = pokemonList[selectedPokemon.pokemonNumber - 1];
     if (pokemonEntry !== undefined) {
+        const width = 200;
+        const height = 350;
+        const maxLeft = columns * pokeballSize - width;
+        const left = (selectedPokemon.column - 1) * pokeballSize
+        const maxTop = rows * pokeballSize - height;
+        const top = (selectedPokemon.row) * pokeballSize
         pokemonToDisplay = (
-            <div className="poke-popup" style={{left: (selectedPokemon.column - 1) * pokeballSize, top: (selectedPokemon.row) * pokeballSize }}>
+            <div className="poke-popup" style={{left: Math.min(left, maxLeft), top: Math.min(top, maxTop), width, height}}>
                 <h1>{pokemonEntry.name}</h1>
                 <img src={pokemonEntry.imageName} alt={pokemonEntry.name} />
                 <p>Type: {pokemonEntry.type}</p>

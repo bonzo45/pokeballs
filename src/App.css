@@ -40,5 +40,6 @@ label {
 .poke-popup {
     position: absolute;
     background-color: grey;
+    border-radius: 5px;
 }
 
