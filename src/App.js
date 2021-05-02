@@ -6,15 +6,26 @@ import pokemonCSV from '!!csv-loader!./pokemon.csv';
 import { Pokeballs } from "./Pokeballs";
 
 const pokemonList = [];
-let i = 1;
+let i = 0;
+const seen = new Set();
 for (const row of pokemonCSV) {
-    if (i !== 1) {
-        const name = row[3] || "";
-        pokemonList.push({
-            name: name,
-            imageName: `/pokemon/${name.toLowerCase().replace(/[^a-z]/gi, '')}.png`,
-        })
+    i++;
+    if (i === 1) {
+        continue;
     }
+    const number = row[0];
+    if (seen.has(number)) {
+        continue
+    }
+    seen.add(number);
+    const name = row[3] || "";
+    pokemonList.push({
+        name: name,
+        imageName: `/pokemon/${name.toLowerCase().replace(/[^a-z]/gi, '')}.png`,
+        type: row[4] || "",
+        weight: row[14],
+        height: row[15],
+    })
     i++;
 }
 

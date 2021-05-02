@@ -95,7 +95,7 @@ export const Pokeballs = ({pokemonList}) => {
         }
 
         forceRender = false;
-    }, [columns, highlightThreshold, pokeballSize]);
+    }, [columns, pokeballSize]);
 
     const imageLoaded = () => {
         setImagesLoaded(imagesLoaded + 1);
@@ -159,7 +159,16 @@ export const Pokeballs = ({pokemonList}) => {
 
     let pokemonToDisplay;
     if (pokemonList[selectedPokemon - 1] !== undefined) {
-        pokemonToDisplay = <img src={pokemonList[selectedPokemon-1].imageName} alt={pokemonList[selectedPokemon-1].name} />
+        const pokemonEntry = pokemonList[selectedPokemon - 1];
+        pokemonToDisplay = (
+            <>
+                <h2>{pokemonEntry.name}</h2>
+                <img src={pokemonEntry.imageName} alt={pokemonEntry.name} />
+                <p>Type: {pokemonEntry.type}</p>
+                <p>Weight: {pokemonEntry.weight}</p>
+                <p>Height: {pokemonEntry.height}</p>
+            </>
+        );
     }
 
     return (
